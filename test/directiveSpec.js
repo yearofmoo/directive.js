@@ -131,8 +131,8 @@ describe('Directive', function() {
     });
   });
 
-  xit('should allow directives to listen on attributes', function() {
-    var captureLog;
+  it('should allow directives to listen on attributes', function() {
+    var captureLog = [];
     directive.register('.observer-directive', function(element, attrs) {
       this.observe('watchMe', function(newValue, oldValue) {
         captureLog.push([newValue, oldValue]);
@@ -143,18 +143,15 @@ describe('Directive', function() {
     
     directive.update(html);
 
-    updateAttr('blue');
-    updateAttr('red');
-    updateAttr('green');
+    var element = document.body.querySelector('.observer-directive');
+    directive.attr(element, 'watchMe', 'blue');
+    directive.attr(element, 'watchMe', 'red');
+    directive.attr(element, 'watchMe', 'green');
 
-    expect(captureLog.shift()).toEqual([undefined, undefined]);
-    expect(captureLog.shift()).toEqual(['blue', undefined]);
+    expect(captureLog.shift()).toEqual([null, undefined]);
+    expect(captureLog.shift()).toEqual(['blue', null]);
     expect(captureLog.shift()).toEqual(['red', 'blue']);
     expect(captureLog.shift()).toEqual(['green', 'red']);
-
-    function updateAttr(value) {
-      document.body.querySelector('.observer-directive').setAttribute('watch-me', value);
-    }
   });
 
   it('should provide a list of all the directives registered', function() {

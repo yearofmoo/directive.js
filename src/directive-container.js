@@ -5,11 +5,27 @@ var DirectiveContainer = (function(container) {
   var instances = [];
   var events = {};
 
-  function directiveBodyTemplate(attrs) {
+  var watchers = [];
+  function watchPulse(fn) {
+    watchers.push(fn);
+    return function deregister() {
+      var index = watchers[fn];
+      watchers.splice(index, 1); 
+    };
+  }
+
+  function watchFlush() {
+    forEach(watchers, function(watch) {
+      watch();
+    });
+  }
+
+  function directiveBodyTemplate(element) {
+    var propertyCache = {};
     return {
       $events : {},
-      $attrs : attrs,
-
+      $watchers : [],
+    
       on : function(event, fn) {
         events[event] = events[event] || [];
         events[event].push(this);
@@ -19,10 +35,22 @@ var DirectiveContainer = (function(container) {
       },
 
       observe : function(prop, fn) {
+        var deregister = watchPulse(function() {
+          var oldValue = propertyCache[prop];
+          var newValue = element.getAttribute(prop);
+          if (oldValue !== newValue) {
+            propertyCache[prop] = newValue;
+            fn(newValue, oldValue);
+          }
+        });
 
+        this.$watchers.push(deregister);
       },
 
       destroy : function() {
+        forEach(this.$watchers, function(fn) {
+          fn();
+        });
         triggerOnFn(this, 'destroy');
       }
     };
@@ -71,13 +99,14 @@ var DirectiveContainer = (function(container) {
       forEach(self.scan(rejectIfMarkedFn), function(entry) {
         var element = entry[0];
         var bodyFn = entry[1];
-        var attrs = compileAttrs(element);
-        var instance = directiveBodyTemplate(attrs);
+        var instance = directiveBodyTemplate(element);
         var instanceID = instances.length;
-        bodyFn.call(instance, element, attrs);
+        bodyFn.call(instance, element, compileAttrs(element));
         instances.push(instance);
         markElement(element, instanceID);
       });
+      
+      self.checkObservers();
 
       function rejectIfMarkedFn(element) {
         return !isElementMarked(element);
@@ -89,7 +118,7 @@ var DirectiveContainer = (function(container) {
         var element = entry[0];
         var instanceID = element.getAttribute(DIRECTIVE_MARK_KEY);
         var instance = instances[instanceID];
-        triggerOnFn(instance, 'destroy');
+        instance.destroy();
         instances.splice(instanceID, 1);
         markElement(element, undefined);
       });
@@ -112,6 +141,15 @@ var DirectiveContainer = (function(container) {
       forEach(events[event] || [], function(instance) {
         triggerOnFn(instance, event, data);
       });
+    },
+
+    attr : function(element, attr, value) {
+      element.setAttribute(attr, value);
+      self.checkObservers();
+    },
+
+    checkObservers : function() {
+      watchFlush();
     }
   }
 });
