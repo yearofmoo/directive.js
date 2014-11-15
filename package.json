@@ -2,6 +2,7 @@
   "title": "directive.js",
   "version": "0.0.2",
   "scripts": {
+    "preinstall": "cp ./scripts/pre-commit ./.git/hooks/pre-commit",
     "test": "./node_modules/.bin/karma start --single-run --browsers PhantomJS"
   },
   "devDependencies": {

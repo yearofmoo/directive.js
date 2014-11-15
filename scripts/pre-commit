@@ -1,0 +1,3 @@
+#!/bin/sh
+gulp package
+git add dist
