@@ -210,3 +210,7 @@ var DirectiveContainer = (function(container) {
 
   return DirectiveContainer;
 })();
+
+if ( typeof module === "object" && typeof module.exports === "object" ) {
+  module.exports = DirectiveContainer;
+}
