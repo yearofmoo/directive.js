@@ -1,14 +1,21 @@
 # directive.js
 [![Build Status](https://secure.travis-ci.org/yearofmoo/directive.js.png?branch=master)](https://travis-ci.org/yearofmoo/directive.js)
 
-Directive.js brings the power of directives from Angular into VanillaJS.
+Directive.js brings the power of directives from angular.js into vanilla JavaScript.
+Directives are effectively JavaScript callbacks for HTML elements, CSS classes and
+custom HTML components that are found on a webpage.
+
+This tool is useful when building AJAX-enhanced webpages where various components
+need to be updated when new page content is added.
 
 ## Requirements
-- Nothing is required in this code for it to work.
+- No special dependencies are required. This tool works with standard JavaScript.
 - jQuery integrates fine as well (just remember to use `$(element)` when needed).
 
-## Installation
+## Browser Support
+- Anything that supports `document.querySelectorAll` (so nothing below IE8).
 
+## Installation
 1. Grab using bower: `bower install directive.js`
 2. The files are under `dist/directive.js` or `dist/directive.min.js`
 
@@ -36,7 +43,6 @@ directives.update(html); //the directives are fired!<D-r>
 ```
 
 ### Listening on Events
-
 The directive body has a `on(event, fn)` function which allows for events
 to be created.
 
@@ -55,7 +61,6 @@ directives.trigger('scream', 5);
 ```
 
 ### Observing Attributes
-
 Directives can also watch attributes:
 
 ```js
@@ -87,7 +92,6 @@ directives.compile();
 ```
 
 ### Targeting inner regions of HTML
-
 Sometimes you may just want to replace a certain region of code without
 having to recompile the entire page. This can be done by adding in a
 CSS selector into the `update()` or `compile()` methods.
@@ -136,19 +140,17 @@ console.log(document.body);
 ```
 
 ## Building it
-
 Run:
 
-- `sudo npm install -g gulp gulp-cli`
+- `sudo npm install -g gulp`
 - `npm install`
 - `gulp package`
 
 The files will be created inside of `dist/directive.js`.
 
 ## Testing it
-
 Run:
 
-- `sudo npm install -g gulp gulp-cli`
+- `sudo npm install -g gulp`
 - `npm install`
 - `gulp test`
