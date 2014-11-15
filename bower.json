@@ -1,9 +1,9 @@
 {
-  "name": "directive.js"
+  "name": "directive.js",
   "version": "0.0.1",
   "main": "dist/directive.js",
   "ignore": [
     ".DS_Store",
     "node_modules/*"
-  ],
+  ]
 }
