@@ -89,6 +89,7 @@ directives.checkObservers();
 
 element.setAttribute('title', 'super-final-title');
 directives.compile();
+// "The title is now: super-final-title"
 ```
 
 ### Targeting inner regions of HTML
