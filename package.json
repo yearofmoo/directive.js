@@ -1,6 +1,9 @@
 {
   "title": "directive.js",
   "version": "0.0.2",
+  "scripts": {
+    "test": "./node_modules/.bin/karma start --single-run --browsers PhantomJS"
+  },
   "devDependencies": {
     "gulp": "^3.8.10",
     "gulp-concat": "^2.4.1",
@@ -10,6 +13,7 @@
     "karma": "^0.12.25",
     "karma-chrome-launcher": "^0.1.5",
     "karma-cli": "0.0.4",
-    "karma-jasmine": "^0.2.3"
+    "karma-jasmine": "^0.2.3",
+    "karma-phantomjs-launcher": "^0.1.4"
   }
 }
