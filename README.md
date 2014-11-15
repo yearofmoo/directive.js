@@ -1,4 +1,5 @@
 # directive.js
+[![Build Status](https://secure.travis-ci.org/yearofmoo/directive.js.png?branch=master)](https://travis-ci.org/yearofmoo/directive.js)
 
 Directive.js brings the power of directives from Angular into VanillaJS.
 
