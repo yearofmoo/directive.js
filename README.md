@@ -85,6 +85,55 @@ element.setAttribute('title', 'super-final-title');
 directives.compile();
 ```
 
+### Targeting inner regions of HTML
+
+Sometimes you may just want to replace a certain region of code without
+having to recompile the entire page. This can be done by adding in a
+CSS selector into the `update()` or `compile()` methods.
+
+```js
+var directives = new DirectiveContainer(); //document.body is the default
+
+var count = 0;
+directives.register('.directive', function(element) {
+  element.innerHTML = 'I am directive #' + (count++); 
+});
+
+var html = '<div class="outer">' +
+           '  <div class="directive"></div>' +
+           '  <div class="inner"></div>' +
+           '    <div class="directive"></div>' +
+           '    <div class="directive"></div>' +
+           '    <div class="directive"></div>' +
+           '  </div>' +
+           '</div>';
+
+directives.update(html);
+
+console.log(document.body);
+/*
+<div class="outer">
+  <div class="directive">I am directive #0</div>
+  <div class="inner"></div>
+    <div class="directive">I am directive #1</div>
+    <div class="directive">I am directive #2</div>
+    <div class="directive">I am directive #3</div>
+  </div>
+</div>
+*/
+
+var newHTML = '<div class="directive"></div>';
+directives.update('.outer .inner', newHTML);
+
+console.log(document.body);
+/*
+<div class="outer">
+  <div class="directive">I am directive #0</div>
+  <div class="directive">I am directive #4</div>
+</div>
+*/
+```
+
 ## Building it
 
 Run:

@@ -111,6 +111,39 @@ describe('Directive', function() {
     expect(document.body.querySelector('.new-directive')).toBeTruthy();
   });
 
+  it('should allow inner regions of the container to be replaced', function() {
+    var count = 0;
+    directive.register('.directive', function(element) {
+      count++;
+      this.on('destroy', function(data) {
+        count--;
+      });
+    });
+
+    var html = '<div class="container">' +
+               '  <div class="directive">...</div>' +
+               '  <div class="inner">' +
+               '    <div class="directive">' +
+               '       1' +
+               '    </div>' +
+               '    <div class="directive">' +
+               '       2' +
+               '    </div>' +
+               '    <div class="directive">' +
+               '       3' +
+               '    </div>' +
+               '  </div>' +
+               '</div>';
+
+    directive.update(html);
+    expect(count).toBe(4);
+
+    var replacementHTML = '<div class="inner">...</div>';
+    directive.update('.container .inner', replacementHTML);
+
+    expect(count).toBe(1);
+  });
+
   it('should collect all attributes when registered', function() {
     var capturedAttrs;
     directive.register('.special-directive', function(element, attrs) {

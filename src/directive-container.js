@@ -1,8 +1,9 @@
 var DirectiveContainer = (function(container) {
   container = container || document.body;
+  var nextInstanceID = 0;
   
   var lookup = {};
-  var instances = [];
+  var instances = {};
   var events = {};
 
   var watchers = [];
@@ -80,11 +81,12 @@ var DirectiveContainer = (function(container) {
       return result;
     },
 
-    scan : function(filterFn) {
+    scan : function(innerContainer, filterFn) {
+      var innerContainer = innerContainer || container;
       filterFn = filterFn || function(val) { return true; };
       var entries = [];
       forEach(lookup, function(fns, selector) {
-        forEach(container.querySelectorAll(selector), function(element) {
+        forEach(innerContainer.querySelectorAll(selector), function(element) {
           if (filterFn(element)) {
             forEach(fns, function(bodyFn) {
               entries.push([element, bodyFn]);
@@ -95,14 +97,14 @@ var DirectiveContainer = (function(container) {
       return entries;
     },
 
-    compile : function() {
-      forEach(self.scan(rejectIfMarkedFn), function(entry) {
+    compile : function(innerContainer) {
+      forEach(self.scan(innerContainer, rejectIfMarkedFn), function(entry) {
         var element = entry[0];
         var bodyFn = entry[1];
         var instance = directiveBodyTemplate(element);
-        var instanceID = instances.length;
+        var instanceID = (nextInstanceID++) + '';
         bodyFn.call(instance, element, compileAttrs(element));
-        instances.push(instance);
+        instances[instanceID] = instance;
         markElement(element, instanceID);
       });
       
@@ -113,28 +115,33 @@ var DirectiveContainer = (function(container) {
       }
     },
 
-    decompile : function() {
-      forEach(self.scan(isElementMarked), function(entry) {
+    decompile : function(innerContainer) {
+      forEach(self.scan(innerContainer, isElementMarked), function(entry) {
         var element = entry[0];
         var instanceID = element.getAttribute(DIRECTIVE_MARK_KEY);
         var instance = instances[instanceID];
         instance.destroy();
-        instances.splice(instanceID, 1);
+        delete instances[instanceID];
         markElement(element, undefined);
       });
     },
 
     update : function(newContent) {
-      self.decompile(container);
+      var replacementContainer = container;
+      if (arguments.length == 2) {
+        replacementContainer = container.querySelector(arguments[0]);
+        newContent = arguments[1];
+      }
+      self.decompile(replacementContainer);
       self.trigger(container, 'update');
 
       if (typeof newContent == 'string') {
-        container.innerHTML = newContent;
+        replacementContainer.innerHTML = newContent;
       } else {
-        container.innerHTML = '';
-        container.appendChild(newContent);
+        replacementContainer.innerHTML = '';
+        replacementContainer.appendChild(newContent);
       }
-      self.compile(container);
+      self.compile(replacementContainer);
     },
 
     trigger : function(event, data) {
