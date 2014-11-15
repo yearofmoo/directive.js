@@ -1,6 +1,6 @@
 {
   "title": "directive.js",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "devDependencies": {
     "gulp": "^3.8.10",
     "gulp-concat": "^2.4.1",
