@@ -1,0 +1,4 @@
+/*
+ * Legal...
+ */
+var DirectiveContainer = (function() {

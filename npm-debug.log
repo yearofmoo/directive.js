@@ -1,0 +1,28 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/Users/matias/.nvm/current/bin/node',
+1 verbose cli   '/Users/matias/.nvm/current/bin/npm',
+1 verbose cli   'install',
+1 verbose cli   'gulp',
+1 verbose cli   'gulp-karma',
+1 verbose cli   'gulp-concat',
+1 verbose cli   'karma',
+1 verbose cli   '--save-dev' ]
+2 info using npm@1.4.28
+3 info using node@v0.10.32
+4 verbose node symlink /Users/matias/.nvm/current/bin/node
+5 error Failed to parse json
+5 error Unexpected end of input
+6 error File: /Users/matias/Sites/yearofmoo/directive.js/package.json
+7 error Failed to parse package.json data.
+7 error package.json must be actual JSON, not just JavaScript.
+7 error
+7 error This is not a bug in npm.
+7 error Tell the package author to fix their package.json file. JSON.parse
+8 error System Darwin 13.3.0
+9 error command "/Users/matias/.nvm/current/bin/node" "/Users/matias/.nvm/current/bin/npm" "install" "gulp" "gulp-karma" "gulp-concat" "karma" "--save-dev"
+10 error cwd /Users/matias/Sites/yearofmoo/directive.js
+11 error node -v v0.10.32
+12 error npm -v 1.4.28
+13 error file /Users/matias/Sites/yearofmoo/directive.js/package.json
+14 error code EJSONPARSE
+15 verbose exit [ 1, true ]
