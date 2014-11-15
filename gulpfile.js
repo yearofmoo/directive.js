@@ -19,7 +19,8 @@ function sourceFiles() {
     'src/public.js',
     'src/common.js',
     'src/directive-container.js',
-    'src/public-bottom.js'
+    'src/public-bottom.js',
+    'src/module-exports.js'
   ];
 }
 
