@@ -6,6 +6,13 @@ Directive.js brings the power of directives from Angular into VanillaJS.
 - Nothing is required in this code for it to work.
 - jQuery integrates fine as well (just remember to use `$(element)` when needed).
 
+## Installation
+
+1. Grab using bower: `bower install directive.js`
+2. The files are under `dist/directive.js` or `dist/directive.min.js`
+
+You can also just download the files directive from github under `dist/`.
+
 ## Usage
 
 ### Registering Directives
